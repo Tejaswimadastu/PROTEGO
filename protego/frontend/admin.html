@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PROTEGO Admin Ultimate Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+body{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+}
+canvas{
+  width:100% !important;
+  height:350px !important;
+}
+.sidebar{
+  height:100vh;
+  width:230px;
+  position:fixed;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  padding:20px;
+}
+.sidebar button{
+  width:100%;
+  margin-bottom:10px;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+  border:none;
+}
+.main{
+  margin-left:250px;
+  padding:20px;
+}
+.card{
+  background:rgba(255,255,255,0.1);
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+}
+#map{
+  height:400px;
+  border-radius:15px;
+}
+.badge-low{background:green;}
+.badge-medium{background:orange;}
+.badge-high{background:red;}
+.badge-emergency{background:black;}
+</style>
+</head>
+
+<body>
+
+<audio id="alertSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+<div class="sidebar">
+<h4>🛡️ PROTEGO</h4>
+<button onclick="loadUsers()">Users</button>
+<button onclick="loadChats()">Chats</button>
+<button onclick="loadRisk()">High Risk</button>
+<button onclick="loadLocations()">Locations</button>
+<button onclick="logout()" class="btn btn-danger">Logout</button>
+</div>
+
+<div class="main">
+
+<h2>🚨 Smart Admin Dashboard</h2>
+
+<div class="row">
+<div class="col-md-3"><div class="card"><h3 id="users">0</h3><p>Users</p></div></div>
+<div class="col-md-3"><div class="card"><h3 id="chats">0</h3><p>Chats</p></div></div>
+<div class="col-md-3"><div class="card"><h3 id="high">0</h3><p>High Risk</p></div></div>
+<div class="col-md-3"><div class="card"><h3 id="emergency">0</h3><p>Emergency</p></div></div>
+</div>
+<div class="row mt-4">
+
+  <div class="col-md-6">
+    <div class="card">
+      <h5>Risk Distribution</h5>
+      <canvas id="riskChart"></canvas>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <h5>Chat Activity Trend</h5>
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+
+</div>
+<div id="map" class="mt-4"></div>
+<div id="data" class="mt-4"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+"https://wyaokrorqdnbcwkgjcho.supabase.co",
+"sb_publishable_rdlUtCFXg5bMKQEmHuEPRw_5JBvWXQf"
+);
+
+const user = JSON.parse(localStorage.getItem("user"));
+if(!user || user.role!=="admin"){
+  alert("Access denied");
+  location="/login";
+}
+
+function logout(){
+  localStorage.removeItem("user");
+  location="/login";
+}
+
+// GLOBAL
+let map=null;
+let chart=null;
+let lastEmergencyCount=0;
+
+// ================= STATS =================
+async function loadStats(){
+  try{
+    const {data:users}=await supabaseClient.from("users").select("*");
+    const {data:chats}=await supabaseClient.from("chats").select("*");
+
+    document.getElementById("users").innerText=users.length;
+    document.getElementById("chats").innerText=chats.length;
+
+    let high=chats.filter(x=>x.risk==="high").length;
+    let emergency=chats.filter(x=>x.risk==="emergency").length;
+
+    document.getElementById("high").innerText=high;
+    document.getElementById("emergency").innerText=emergency;
+
+    // 🚨 alert only if NEW emergency
+    if(emergency > lastEmergencyCount){
+      showAlert("🚨 NEW EMERGENCY DETECTED");
+      document.getElementById("alertSound").play();
+    }
+
+    lastEmergencyCount = emergency;
+
+  }catch(e){
+    console.log(e);
+  }
+}
+
+// ================= ALERT =================
+function showAlert(msg){
+  const div=document.createElement("div");
+  div.style="position:fixed;top:20px;right:20px;background:red;padding:15px;border-radius:10px;";
+  div.innerText=msg;
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(),4000);
+}
+
+// ================= CHART =================
+let riskChart, trendChart;
+
+async function loadChart(){
+
+  const {data} = await supabaseClient.from("chats").select("*");
+
+  let counts = {low:0, medium:0, high:0, emergency:0};
+
+  data.forEach(x=>{
+    counts[x.risk]++;
+  });
+
+  // destroy old charts
+  if(riskChart) riskChart.destroy();
+  if(trendChart) trendChart.destroy();
+
+  // 🟢 RISK PIE CHART
+  riskChart = new Chart(document.getElementById("riskChart"),{
+    type:"doughnut",
+    data:{
+      labels:["Low","Medium","High","Emergency"],
+      datasets:[{
+        data:[
+          counts.low,
+          counts.medium,
+          counts.high,
+          counts.emergency
+        ],
+        backgroundColor:[
+          "green",
+          "orange",
+          "red",
+          "black"
+        ]
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{
+          labels:{color:"white"}
+        }
+      }
+    }
+  });
+
+  // 🟢 TREND BAR CHART
+  trendChart = new Chart(document.getElementById("trendChart"),{
+    type:"bar",
+    data:{
+      labels:["Low","Medium","High","Emergency"],
+      datasets:[{
+        label:"Risk Count",
+        data:[
+          counts.low,
+          counts.medium,
+          counts.high,
+          counts.emergency
+        ],
+        backgroundColor:[
+          "green",
+          "orange",
+          "red",
+          "black"
+        ]
+      }]
+    },
+    options:{
+      responsive:true,
+      scales:{
+        x:{ticks:{color:"white"}},
+        y:{ticks:{color:"white"}}
+      },
+      plugins:{
+        legend:{
+          labels:{color:"white"}
+        }
+      }
+    }
+  });
+}
+// ================= MAP =================
+async function loadLocations(){
+
+  if(map){ map.remove(); }
+
+  map=L.map('map').setView([20,78],5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+  const {data:locs}=await supabaseClient.from("locations").select("*");
+  const {data:chats}=await supabaseClient.from("chats").select("*");
+
+  locs.forEach(loc=>{
+    let userChats = chats.filter(c=>c.user_id===loc.user_id);
+
+    let risk="low";
+    if(userChats.length){
+      risk=userChats[userChats.length-1].risk;
+    }
+
+    let color={
+      low:"green",
+      medium:"orange",
+      high:"red",
+      emergency:"black"
+    }[risk];
+
+    L.circleMarker([loc.latitude,loc.longitude],{color})
+      .addTo(map)
+      .bindPopup(`User Risk: ${risk}`);
+  });
+}
+
+// ================= TABLE =================
+function show(data){
+
+  let html="<table class='table table-dark'><tr>";
+
+  if(data.length){
+    Object.keys(data[0]).forEach(k=>html+="<th>"+k+"</th>");
+    html+="<th>Action</th></tr>";
+
+    data.forEach(r=>{
+      html+="<tr>";
+
+      Object.entries(r).forEach(([k,v])=>{
+        if(k==="risk"){
+          html+=`<td><span class="badge badge-${v}">${v}</span></td>`;
+        }else{
+          html+=`<td>${v}</td>`;
+        }
+      });
+
+      html+=`
+      <td>
+        <button class="btn btn-success btn-sm" onclick="markSafe('${r.id}')">✔</button>
+        <button class="btn btn-danger btn-sm" onclick="alertUser('${r.user_id}')">🚨</button>
+      </td>
+      `;
+
+      html+="</tr>";
+    });
+  }
+
+  html+="</table>";
+  document.getElementById("data").innerHTML=html;
+}
+
+// ================= LOADERS =================
+async function loadUsers(){
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("id, email, created_at"); // ❌ no password
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  show(data);
+}
+
+async function loadChats(){
+  const {data}=await supabaseClient.from("chats").select("*");
+  show(data);
+}
+
+async function loadRisk(){
+  const {data}=await supabaseClient
+    .from("chats")
+    .select("*")
+    .in("risk",["high","emergency"]);
+  show(data);
+}
+
+// ================= ACTIONS =================
+function markSafe(id){
+  alert("✔ Marked safe: "+id);
+}
+
+function alertUser(id){
+  alert("🚨 Alert triggered for user: "+id);
+}
+
+// ================= LOOP =================
+setInterval(()=>{
+  loadStats();
+},5000);
+
+// INITIAL LOAD
+loadStats();
+loadChart();
+loadLocations();
+</script>
+
+</body>
+</html>

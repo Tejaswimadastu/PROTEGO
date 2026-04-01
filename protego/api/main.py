@@ -2,19 +2,14 @@
 main.py
 =======
 FastAPI entry point for PROTEGO.
-
-Responsibilities:
-- App initialization
-- Middleware configuration
-- API routing
-- Error handling
-- Chatbot orchestration
 """
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import traceback
+from pathlib import Path
 
 from protego.api.schemas import (
     ChatRequest,
@@ -22,6 +17,11 @@ from protego.api.schemas import (
     ChatResponseWithDebug,
 )
 from protego.api.chatbot_service import handle_message
+
+# -----------------------------
+# Paths (🔥 ADDED)
+# -----------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -----------------------------
 # App initialization
@@ -39,10 +39,19 @@ app = FastAPI(
 # -----------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # ⚠️ restrict in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# -----------------------------
+# 🔥 SERVE FRONTEND (ADDED)
+# -----------------------------
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "frontend"),
+    name="static"
 )
 
 # -----------------------------
@@ -53,9 +62,36 @@ async def startup_event():
     print("✅ PROTEGO API started successfully")
 
 # -----------------------------
-# Health check
+# 🔥 FRONTEND ROUTES (ADDED)
 # -----------------------------
-@app.get("/", tags=["System"])
+@app.get("/", tags=["UI"])
+async def root_ui():
+    return FileResponse(BASE_DIR / "frontend" / "login.html")
+
+
+@app.get("/login", tags=["UI"])
+async def login_ui():
+    return FileResponse(BASE_DIR / "frontend" / "login.html")
+
+
+@app.get("/signup.html", tags=["UI"])
+async def signup_ui():
+    return FileResponse(BASE_DIR / "frontend" / "signup.html")
+
+
+@app.get("/user", tags=["UI"])
+async def user_ui():
+    return FileResponse(BASE_DIR / "frontend" / "index.html")
+
+
+@app.get("/admin", tags=["UI"])
+async def admin_ui():
+    return FileResponse(BASE_DIR / "frontend" / "admin.html")
+
+# -----------------------------
+# Health check (KEEP SAME)
+# -----------------------------
+@app.get("/health", tags=["System"])
 async def health_check():
     return {
         "status": "running",
@@ -64,7 +100,7 @@ async def health_check():
     }
 
 # -----------------------------
-# Chat endpoint (PRIMARY)
+# Chat endpoint (UNCHANGED)
 # -----------------------------
 @app.post(
     "/chat",
@@ -87,7 +123,6 @@ async def chat_endpoint(request: ChatRequest):
         )
 
     except RuntimeError as e:
-        # 🔥 Show real internal error
         traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -95,7 +130,6 @@ async def chat_endpoint(request: ChatRequest):
         )
 
     except Exception as e:
-        # 🔥 Catch-all with traceback
         traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -103,7 +137,7 @@ async def chat_endpoint(request: ChatRequest):
         )
 
 # -----------------------------
-# Debug endpoint (CONTROLLED)
+# Debug endpoint (UNCHANGED)
 # -----------------------------
 @app.post(
     "/chat/debug",

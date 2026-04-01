@@ -1,293 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PROTEGO | Your Digital Shield</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>PROTEGO AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
 
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f4f6fb;
-    }
+/* ================= ROOT ================= */
+:root{
+  --primary:#6c63ff;
+  --secondary:#00c6ff;
+  --bg-dark:#0f2027;
+  --bg-mid:#203a43;
+  --bg-light:#2c5364;
 
-    /* HERO */
-    .hero {
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      color: white;
-      padding: 140px 20px;
-      border-bottom-left-radius: 90px;
-      border-bottom-right-radius: 90px;
-    }
+  --glass:rgba(255,255,255,0.08);
+  --glass-strong:rgba(255,255,255,0.15);
 
-    /* INFO */
-    .section-title {
-      font-weight: 700;
-      margin-bottom: 40px;
-    }
+  --border:rgba(255,255,255,0.15);
+  --text-light:#ffffff;
+  --text-muted:rgba(255,255,255,0.7);
 
-    .info-card {
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-      height: 100%;
-    }
+  --success:#00ffae;
+  --danger:#ff4d4d;
+}
 
-    /* CHAT BUTTON */
-    .chat-btn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      border: none;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      font-size: 28px;
-      color: white;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-      z-index: 1000;
-    }
+/* ================= GLOBAL ================= */
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,var(--bg-dark),var(--bg-mid),var(--bg-light));
+  color:var(--text-light);
+  overflow-x:hidden;
+}
 
-    /* CHAT BOX */
-    .chat-box {
-      display: none;
-      position: fixed;
-      bottom: 110px;
-      right: 30px;
-      width: 480px;
-      height: 650px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.35);
-      overflow: hidden;
-      z-index: 1000;
-    }
+/* ================= NAVBAR ================= */
+.navbar{
+  background:rgba(0,0,0,0.4) !important;
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+}
 
-    .chat-header {
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      color: white;
-      padding: 18px;
-      font-weight: 600;
-      text-align: center;
-      font-size: 18px;
-    }
+.navbar h5{
+  font-weight:600;
+}
 
-    .chat-body {
-      padding: 18px;
-      height: 430px;
-      overflow-y: auto;
-      background-color: #f8f9ff;
-    }
+/* ================= HERO ================= */
+h1.display-4{
+  font-weight:700;
+  letter-spacing:1px;
+}
 
-    .bot-msg, .user-msg {
-      padding: 14px 16px;
-      border-radius: 16px;
-      margin-bottom: 14px;
-      max-width: 78%;
-      font-size: 15px;
-      line-height: 1.5;
-    }
+.lead{
+  color:var(--text-muted);
+}
 
-    .bot-msg {
-      background: #eef1ff;
-    }
+/* BUTTON */
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border:none;
+  border-radius:10px;
+  padding:10px 20px;
+  transition:0.3s;
+}
 
-    .user-msg {
-      background: #d1ffe0;
-      margin-left: auto;
-    }
+.btn-primary:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
 
-    .emergency {
-      border: 2px solid #dc3545;
-      background: #fff0f0;
-      font-weight: 600;
-    }
+/* ================= CHAT CONTAINER ================= */
+.chat-container{
+  max-width:420px;
+}
 
-    footer {
-      margin-top: 80px;
-    }
-  </style>
+/* ================= CARD ================= */
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+/* ================= HEADER ================= */
+.card-header{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  font-weight:600;
+  text-align:center;
+  border:none;
+  padding:15px;
+}
+
+/* ================= CHAT BODY ================= */
+#chatBody{
+  background:transparent;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* SCROLLBAR */
+#chatBody::-webkit-scrollbar{
+  width:6px;
+}
+#chatBody::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.2);
+  border-radius:10px;
+}
+
+/* ================= MESSAGES ================= */
+
+.message{
+  white-space: pre-line;   /* ✅ keeps spacing */
+  word-break: break-word;  /* ✅ avoids overflow */
+  line-height: 1.5;        /* ✅ readable */
+
+  max-width:75%;
+  padding:12px 15px;
+  border-radius:15px;
+  margin-bottom:10px;
+  animation:fadeIn 0.3s ease;
+  word-wrap:break-word;
+}
+
+/* BOT MESSAGE */
+.bot-msg{
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+/* USER MESSAGE */
+.user-msg{
+  background:linear-gradient(135deg,#00ffae,#00c6ff);
+  color:black;
+  margin-left:auto;
+  font-weight:500;
+}
+
+/* EMERGENCY MESSAGE */
+.emergency{
+  border:2px solid var(--danger);
+  background:rgba(255,0,0,0.2);
+  box-shadow:0 0 15px rgba(255,0,0,0.5);
+}
+
+/* ================= INPUT ================= */
+.card-footer{
+  background:transparent;
+  border-top:1px solid var(--border);
+  padding:15px;
+}
+
+input#userInput{
+  border-radius:12px;
+  border:none;
+  padding:12px;
+  background:rgba(255,255,255,0.15);
+  color:white;
+}
+
+input#userInput::placeholder{
+  color:rgba(255,255,255,0.6);
+}
+
+input#userInput:focus{
+  outline:none;
+  box-shadow:0 0 10px rgba(0,198,255,0.5);
+}
+
+/* ================= FLOAT BUTTON ================= */
+button.rounded-circle{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border:none;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  transition:0.3s;
+}
+
+button.rounded-circle:hover{
+  transform:scale(1.1);
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+
+  .col-lg-7{
+    display:none;
+  }
+
+  .col-lg-5{
+    width:100%;
+  }
+
+  .chat-container{
+    max-width:100%;
+  }
+
+}
+
+/* ================= EXTRA PREMIUM EFFECTS ================= */
+
+/* Glow */
+.card{
+  box-shadow:
+    0 0 10px rgba(108,99,255,0.3),
+    0 0 30px rgba(0,198,255,0.2);
+}
+
+/* Smooth transitions */
+*{
+  transition:all 0.2s ease;
+}
+
+/* Button pulse */
+.btn-primary{
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.03);}
+  100%{transform:scale(1);}
+}
+
+/* Chat message hover */
+.message:hover{
+  transform:scale(1.02);
+}
+
+/* Shadow depth */
+.card{
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.5),
+    inset 0 0 10px rgba(255,255,255,0.05);
+}
+
+</style>
+
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-dark fixed-top shadow">
-  <div class="container">
-    <span class="navbar-brand fw-bold">🛡️ PROTEGO</span>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-dark bg-dark px-4 py-3">
+  <div class="d-flex justify-content-between w-100 align-items-center">
+    <h5 id="brand" class="mb-0">🛡️ PROTEGO</h5>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero text-center">
-  <div class="container">
-    <h1 class="display-3 fw-bold">PROTEGO</h1>
-    <p class="mt-4 fs-5">
-      Your AI-powered digital shield for emotional distress,
-      domestic violence support, and crisis safety guidance.
-    </p>
-    <button class="btn btn-light btn-lg mt-5 px-5" onclick="toggleChat()">
-      Talk to Protego 🤍
-    </button>
-  </div>
-</section>
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="container-fluid">
 
-<!-- INFO SECTIONS -->
-<section class="container my-5">
-  <h2 class="text-center section-title">How Protego Helps</h2>
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="info-card">
-        <h5>🤍 Emotional Support</h5>
-        <p>
-          Protego listens without judgment and responds with empathy
-          when you feel scared, sad, or overwhelmed.
-        </p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="info-card">
-        <h5>🛡️ Safety Detection</h5>
-        <p>
-          Advanced AI detects emotional distress, abuse patterns,
-          and escalating danger in real time.
-        </p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="info-card">
-        <h5>🚨 Emergency Guidance</h5>
-        <p>
-          When danger is detected, Protego immediately shows
-          emergency contacts and safety instructions.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="row vh-100">
 
-<section class="container my-5">
-  <h2 class="text-center section-title">When Should You Use Protego?</h2>
-  <div class="row g-4">
-    <div class="col-md-6">
-      <div class="info-card">
-        <ul>
-          <li>You feel unsafe or threatened</li>
-          <li>Someone is hurting you physically or emotionally</li>
-          <li>You feel scared to go home</li>
-          <li>You need immediate guidance</li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="info-card">
-        <p class="fw-semibold text-danger">
-          ⚠️ If you are in immediate danger, contact emergency services.
-        </p>
-        <p>
-          Protego is a support tool, not a replacement for law enforcement
-          or medical professionals.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- LEFT SIDE (HERO) -->
+    <div class="col-lg-7 d-flex flex-column justify-content-center align-items-center text-center">
 
-<!-- CHAT BUTTON -->
-<button class="chat-btn" onclick="toggleChat()">💬</button>
+      <h1 class="display-4 fw-bold mb-3">AI Safety Assistant</h1>
 
-<!-- CHAT BOX -->
-<div class="chat-box" id="chatBox">
-  <div class="chat-header">Protego Assistant</div>
+      <p class="lead mb-4">
+        Real-time Machine Learning powered emotional & risk detection system
+      </p>
 
-  <div class="chat-body" id="chatBody">
-    <div class="bot-msg">
-      Hello 🤍 I’m Protego. You’re safe here. How can I help you today?
-    </div>
-  </div>
-
-  <div class="p-3 border-top bg-white">
-    <div class="input-group">
-      <input id="userInput"
-             class="form-control form-control-lg"
-             placeholder="Type your message..."
-      />
-      <button class="btn btn-primary btn-lg px-4" onclick="sendMessage()">
-        Send
+      <button class="btn btn-primary btn-lg" onclick="toggleChat()">
+        Start Chat
       </button>
+
     </div>
+
+    <!-- RIGHT SIDE (CHAT PANEL) -->
+    <div class="col-lg-5 d-flex justify-content-center align-items-center">
+
+      <div class="chat-container w-100">
+
+        <!-- CHAT CARD -->
+        <div class="card shadow-lg">
+
+          <!-- HEADER -->
+          <div class="card-header text-center">
+            <strong>Protego AI</strong>
+          </div>
+
+          <!-- CHAT BODY -->
+          <div class="card-body" id="chatBody" style="height:400px; overflow-y:auto;">
+
+            <div class="p-2 mb-2 bg-light rounded">
+              Hello 🤍 I’m here for you
+            </div>
+
+          </div>
+
+          <!-- INPUT -->
+          <div class="card-footer">
+
+            <input 
+              id="userInput"
+              type="text"
+              class="form-control mb-2"
+              placeholder="Type your message..."
+            >
+
+            <button 
+              class="btn btn-primary w-100"
+              onclick="sendMessage()"
+            >
+              Send
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+
 </div>
 
-<!-- FOOTER -->
-<footer class="bg-dark text-white text-center py-3">
-  <small>© 2026 PROTEGO | AI for Safety & Human Dignity</small>
-</footer>
+<!-- ================= FLOAT CHAT BUTTON ================= -->
+<button 
+  class="btn btn-primary rounded-circle position-fixed"
+  style="bottom:20px; right:20px; width:60px; height:60px;"
+  onclick="toggleChat()"
+>
+💬
+</button>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const chatBox = document.getElementById("chatBox");
+
+// ================= INIT =================
+const supabaseClient = supabase.createClient(
+  "https://wyaokrorqdnbcwkgjcho.supabase.co",
+  "sb_publishable_rdlUtCFXg5bMKQEmHuEPRw_5JBvWXQf"
+);
+
+// ================= DOM =================
 const chatBody = document.getElementById("chatBody");
 const userInput = document.getElementById("userInput");
+const brand = document.getElementById("brand");
 
-function toggleChat() {
-  chatBox.style.display = chatBox.style.display === "block" ? "none" : "block";
+// ================= USER =================
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(!user){
+  window.location = "/login";
+}else{
+  brand.innerText = "🛡️ " + user.name;
 }
 
-userInput.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") sendMessage();
-});
+// ================= LOGOUT =================
+function logout(){
+  localStorage.removeItem("user");
+  window.location = "/login";
+}
 
-async function sendMessage() {
-  const text = userInput.value.trim();
-  if (!text) return;
 
-  addMessage(text, "user-msg");
-  userInput.value = "";
-
-  try {
-    const res = await fetch("http://127.0.0.1:8000/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text, country: "India" })
-    });
-
-    const data = await res.json();
-    const cls = data.risk_level === "emergency"
-      ? "bot-msg emergency"
-      : "bot-msg";
-
-    addMessage(data.reply, cls);
-
-    if (data.emergency_contacts) {
-      let html = "<strong>Emergency Contacts:</strong><ul>";
-      for (const [k, v] of Object.entries(data.emergency_contacts)) {
-        html += `<li><b>${k}</b>: ${v.number}</li>`;
-      }
-      html += "</ul>";
-      addMessage(html, "bot-msg emergency");
-    }
-
-  } catch {
-    addMessage("⚠️ Sorry, I’m having trouble connecting right now.", "bot-msg");
+// ================= CHAT TOGGLE =================
+function toggleChat(){
+  const box = document.querySelector(".chat-container");
+  if(box){
+    box.style.display = box.style.display === "none" ? "block" : "none";
   }
 }
 
-function addMessage(text, className) {
+// ================= ADD MESSAGE =================
+function addMessage(text, type){
+
   const div = document.createElement("div");
-  div.className = className;
-  div.innerHTML = text;
+  div.className = "message " + type;
+  div.innerText = text;
+
   chatBody.appendChild(div);
   chatBody.scrollTop = chatBody.scrollHeight;
 }
-</script>
+function fixSpacing(text) {
+  return text
+    // add space after punctuation
+    .replace(/([.,!?])([A-Za-z])/g, "$1 $2")
 
+    // split camel-like joins (safetyand → safety and)
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+
+    // fix missing spaces in long words (fallback)
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+
+    // normalize spaces
+    .replace(/\s+/g, " ")
+
+    // add paragraph breaks
+    .replace(/([.!?])\s*/g, "$1\n\n")
+
+    .trim();
+}
+function typeMessage(text, type) {
+
+  const div = document.createElement("div");
+  div.className = "message " + type;
+
+  // ✅ THIS FIXES SPACING
+  div.style.whiteSpace = "pre-wrap";
+
+  chatBody.appendChild(div);
+
+  let i = 0;
+
+  const interval = setInterval(() => {
+
+    // ✅ USE textContent (NOT innerHTML)
+    div.textContent += text[i];
+
+    i++;
+
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    if (i >= text.length) {
+      clearInterval(interval);
+    }
+
+  }, 15);
+}
+// ================= EMERGENCY POPUP =================
+function showEmergencyPopup(){
+
+  const popup = document.createElement("div");
+
+  popup.innerHTML = `
+    <div style="
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:red;
+      color:white;
+      padding:15px;
+      border-radius:10px;
+      z-index:9999;
+      font-weight:bold;
+    ">
+      🚨 EMERGENCY DETECTED!
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  setTimeout(()=>popup.remove(),4000);
+}
+
+// ================= SEND MESSAGE =================
+async function sendMessage(){
+
+  const text = userInput.value.trim();
+  if(!text) return;
+
+  addMessage(text,"user-msg");
+  userInput.value = "";
+
+  // typing indicator
+  const typing = document.createElement("div");
+  typing.innerText = "Typing...";
+  typing.className = "message bot-msg";
+  typing.id = "typing";
+
+  chatBody.appendChild(typing);
+
+  try{
+
+    const res = await fetch("http://127.0.0.1:8000/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        message:text,
+        country:"India"
+      })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("typing")?.remove();
+
+    // ================= BOT RESPONSE =================
+    // ================= BOT RESPONSE =================
+const formattedReply = fixSpacing(
+  data.reply || "I'm here for you 🤍"
+);
+
+typeMessage(
+  formattedReply,
+  (data.risk_level === "high" || data.risk_level === "emergency")
+    ? "bot-msg emergency"
+    : "bot-msg"
+);
+
+    // ================= EMERGENCY =================
+    if(data.risk_level === "emergency"){
+      showEmergencyPopup();
+    }
+
+    // ================= SAVE CHAT =================
+    try{
+      await supabaseClient.from("chats").insert([{
+        user_id: user.id,
+        message: text,
+        response: data.reply,
+        risk: data.risk_level
+      }]);
+    }catch(e){
+      console.log("DB error:", e);
+    }
+
+  }catch(err){
+
+    console.log("ERROR:", err);
+
+    document.getElementById("typing")?.remove();
+
+    addMessage("Server error ⚠️","bot-msg");
+  }
+}
+
+// ================= ENTER KEY SUPPORT =================
+userInput.addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    sendMessage();
+  }
+});
+
+</script>
 </body>
 </html>

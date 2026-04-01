@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import threading
+import re
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -45,6 +46,28 @@ _context_memory = ContextMemory(max_history=5)
 
 
 # -----------------------------
+# 🔥 CLEAN RESPONSE TEXT (FIX)
+# -----------------------------
+def clean_response_text(text: str) -> str:
+    if not isinstance(text, str):
+        return ""
+
+    # Add space after punctuation
+    text = re.sub(r'([.,!?])([A-Za-z])', r'\1 \2', text)
+
+    # Fix joined lowercase-uppercase words
+    text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+
+    # Normalize spaces
+    text = re.sub(r'\s+', ' ', text)
+
+    # Add paragraph spacing
+    text = re.sub(r'([.!?])\s*', r'\1\n\n', text)
+
+    return text.strip()
+
+
+# -----------------------------
 # Load resources (once)
 # -----------------------------
 def _load_resources() -> None:
@@ -67,6 +90,7 @@ def _load_resources() -> None:
             _emotion_vectorizer = joblib.load(MODEL_DIR / "emotion_vectorizer.pkl")
             _sentiment_vectorizer = joblib.load(MODEL_DIR / "sentiment_vectorizer.pkl")
             _risk_vectorizer = joblib.load(MODEL_DIR / "risk_vectorizer.pkl")
+
         except Exception as e:
             raise RuntimeError(f"❌ Model/vectorizer loading failed: {e}")
 
@@ -75,6 +99,15 @@ def _load_resources() -> None:
                 _EMERGENCY_CONTACTS = json.load(f)
         except Exception as e:
             raise RuntimeError(f"❌ Emergency contacts load failed: {e}")
+
+
+# -----------------------------
+# Get emergency contacts
+# -----------------------------
+def get_contacts(country: str) -> Dict:
+    if _EMERGENCY_CONTACTS:
+        return _EMERGENCY_CONTACTS.get(country, _EMERGENCY_CONTACTS.get("Global"))
+    return None
 
 
 # -----------------------------
@@ -99,20 +132,28 @@ def handle_message(
 
     _load_resources()
 
+    # -----------------------------
     # 1. Preprocess
+    # -----------------------------
     cleaned_text = clean_text(message)
 
-    # 2. Vectorize (MATCHED)
+    # -----------------------------
+    # 2. Vectorize
+    # -----------------------------
     X_emotion = _emotion_vectorizer.transform([cleaned_text])
     X_sentiment = _sentiment_vectorizer.transform([cleaned_text])
     X_risk = _risk_vectorizer.transform([cleaned_text])
 
+    # -----------------------------
     # 3. Predictions
+    # -----------------------------
     emotion = _emotion_model.predict(X_emotion)[0]
     sentiment = _sentiment_model.predict(X_sentiment)[0]
     ml_risk = _risk_model.predict(X_risk)[0]
 
+    # -----------------------------
     # 4. Risk fusion
+    # -----------------------------
     risk_result = compute_risk(
         text=message,
         emotion=emotion,
@@ -121,7 +162,9 @@ def handle_message(
         previous_risks=_context_memory.get_recent_risks()
     )
 
-    # 5. Safety rules (final authority)
+    # -----------------------------
+    # 5. Safety rules
+    # -----------------------------
     safety = apply_safety_rules(
         text=message,
         current_risk=risk_result["final_risk"],
@@ -130,25 +173,34 @@ def handle_message(
 
     final_risk = safety["final_risk"]
 
-    # 6. Context update
+    # -----------------------------
+    # 6. Update context
+    # -----------------------------
     _context_memory.update(risk=final_risk, emotion=emotion)
 
+    # -----------------------------
     # 7. Emergency contacts
+    # -----------------------------
     emergency_contacts: Optional[dict] = None
-    if final_risk == "emergency":
-        emergency_contacts = _EMERGENCY_CONTACTS.get(
-            country, _EMERGENCY_CONTACTS.get("Global")
-        )
+    if final_risk in {"high", "emergency"}:
+        emergency_contacts = get_contacts(country)
 
-    # 8. Generate response (✔ CORRECT SIGNATURE)
+    # -----------------------------
+    # 8. Generate response
+    # -----------------------------
     response_payload = generate_response(
         emotion=emotion,
         final_risk=final_risk,
         emergency_contacts=emergency_contacts
     )
 
+    # -----------------------------
+    # 9. FINAL RESPONSE (🔥 FIXED)
+    # -----------------------------
+    reply_text = clean_response_text(response_payload["message"])
+
     response = {
-        "reply": response_payload["message"],
+        "reply": reply_text,
         "risk_level": final_risk,
         "emotion": emotion,
         "sentiment": sentiment,
