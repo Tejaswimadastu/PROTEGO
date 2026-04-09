@@ -3,3 +3,7 @@ uvicorn
 python-multipart
 jinja2
 supabase
+joblib
+scikit-learn
+pandas
+numpy
