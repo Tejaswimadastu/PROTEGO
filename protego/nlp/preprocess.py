@@ -31,6 +31,9 @@ except LookupError:
         "Run: python -m nltk.downloader stopwords wordnet"
     )
 
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 # Negations are emotionally important — keep them
 NEGATION_WORDS = {
     "not", "no", "never",
