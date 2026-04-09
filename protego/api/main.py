@@ -74,7 +74,7 @@ async def login_ui():
     return FileResponse(BASE_DIR / "frontend" / "login.html")
 
 
-@app.get("/signup.html", tags=["UI"])
+@app.get("/signup", tags=["UI"])
 async def signup_ui():
     return FileResponse(BASE_DIR / "frontend" / "signup.html")
 
