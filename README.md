@@ -686,11 +686,11 @@ Password: admin123
 
 ### Bandi Chandra Kanth
 
-Machine Learning, NLP, Backend Development, System Design
+Data Analysis, Machine Learning, NLP, Backend Development, System Design. 
 
 ### Tejaswi Madastu
 
-Frontend Development, UI/UX Design, Testing & Integration
+Frontend Development, UI/UX Design, Testing(API testing,All Testcases,Edge Cases), DataBase design and integration .
 
 ---
 
@@ -719,8 +719,3 @@ By combining Machine Learning, NLP, Safety Intelligence, and Real-Time Monitorin
 
 ## © 2026 PROTEGO
 
-**Developed by 
-
---Bandi Chandra Kanth 
-
---Tejaswi Madastu**
