@@ -346,9 +346,6 @@ This project integrates concepts from:
 
 making it suitable as a major academic project, research prototype, or portfolio project.
 
----
-
-Add this section to your README after the **Installation** section.
 
 ---
 
