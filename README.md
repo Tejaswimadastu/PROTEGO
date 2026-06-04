@@ -348,6 +348,343 @@ making it suitable as a major academic project, research prototype, or portfolio
 
 ---
 
+Add this section to your README after the **Installation** section.
+
+---
+
+# ▶️ Execution Guide
+
+## 📋 Prerequisites
+
+Before running PROTEGO, ensure the following software is installed:
+
+### Required Software
+
+* Python 3.11+ (Recommended: Python 3.13)
+* Git
+* Supabase Account
+* Modern Web Browser (Chrome, Edge, Firefox)
+
+Verify installation:
+
+```bash
+python --version
+```
+
+Expected:
+
+```text
+Python 3.13.x
+```
+
+---
+
+# 📥 Clone Repository
+
+```bash
+git clone https://github.com/your-username/protego.git
+
+cd protego
+```
+
+---
+
+# 📦 Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+If requirements.txt is unavailable:
+
+```bash
+pip install fastapi uvicorn scikit-learn pandas nltk joblib supabase
+```
+
+---
+
+# 📚 Download NLP Resources
+
+PROTEGO uses NLTK resources for preprocessing.
+
+Run once:
+
+```bash
+python -m nltk.downloader stopwords wordnet
+```
+
+---
+
+# 🗄️ Configure Database
+
+Create the following tables in Supabase:
+
+### Users Table
+
+```sql
+create table users(
+    id uuid primary key default gen_random_uuid(),
+    name text,
+    email text unique,
+    password text,
+    role text
+);
+```
+
+### Chats Table
+
+```sql
+create table chats(
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid references users(id),
+    message text,
+    response text,
+    risk text,
+    created_at timestamp default now()
+);
+```
+
+### Locations Table
+
+```sql
+create table locations(
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid references users(id),
+    latitude float,
+    longitude float,
+    created_at timestamp default now()
+);
+```
+
+---
+
+# 🧠 Train Machine Learning Models
+
+Generate model files before first execution.
+
+### Train Emotion Model
+
+```bash
+python -m protego.train.train_emotion
+```
+
+### Train Sentiment Model
+
+```bash
+python -m protego.train.train_sentiment
+```
+
+### Train Risk Model
+
+```bash
+python -m protego.train.train_risk
+```
+
+Expected output:
+
+```text
+emotion_model.pkl
+emotion_vectorizer.pkl
+
+sentiment_model.pkl
+sentiment_vectorizer.pkl
+
+risk_model.pkl
+risk_vectorizer.pkl
+```
+
+Generated inside:
+
+```text
+protego/models/
+```
+
+---
+
+# 🚀 Run PROTEGO
+
+From project root:
+
+```bash
+python -m uvicorn protego.api.main:app --reload
+```
+
+Expected:
+
+```text
+INFO: Uvicorn running on http://127.0.0.1:8000
+✅ PROTEGO API started successfully
+```
+
+---
+
+# 🌐 Access Application
+
+### Login Page
+
+```text
+http://localhost:8000
+```
+
+### Signup Page
+
+```text
+http://localhost:8000/signup
+```
+
+### User Dashboard
+
+```text
+http://localhost:8000/user
+```
+
+### Admin Dashboard
+
+```text
+http://localhost:8000/admin
+```
+
+### API Documentation
+
+```text
+http://localhost:8000/docs
+```
+
+### ReDoc Documentation
+
+```text
+http://localhost:8000/redoc
+```
+
+---
+
+# 🧪 Test API
+
+Open:
+
+```text
+http://localhost:8000/docs
+```
+
+Navigate to:
+
+```text
+POST /chat
+```
+
+Example request:
+
+```json
+{
+  "message": "I feel scared to go home tonight",
+  "country": "India"
+}
+```
+
+Example response:
+
+```json
+{
+  "reply": "I’m concerned about your safety right now.",
+  "risk_level": "high",
+  "emotion": "fear",
+  "sentiment": "negative",
+  "show_emergency": true
+}
+```
+
+---
+
+# 👤 Test User Login
+
+Insert a sample user:
+
+```sql
+insert into users(name,email,password,role)
+values(
+'Demo User',
+'demo@gmail.com',
+'1234',
+'user'
+);
+```
+
+Login:
+
+```text
+Email: demo@gmail.com
+Password: 1234
+```
+
+---
+
+# 👨‍💼 Test Admin Login
+
+Insert admin:
+
+```sql
+insert into users(name,email,password,role)
+values(
+'Admin',
+'admin@gmail.com',
+'admin123',
+'admin'
+);
+```
+
+Login:
+
+```text
+Email: admin@gmail.com
+Password: admin123
+```
+
+---
+
+# 🔥 Full Execution Flow
+
+```text
+1. Clone Repository
+        ↓
+2. Install Dependencies
+        ↓
+3. Download NLTK Resources
+        ↓
+4. Configure Supabase Database
+        ↓
+5. Train ML Models
+        ↓
+6. Run FastAPI Server
+        ↓
+7. Open Login Page
+        ↓
+8. Login / Signup
+        ↓
+9. Chat with PROTEGO
+        ↓
+10. Monitor Activity via Admin Dashboard
+```
+
+---
+
+# ✅ Successful Run Checklist
+
+* [ ] Dependencies Installed
+* [ ] NLTK Resources Downloaded
+* [ ] Database Connected
+* [ ] Models Trained
+* [ ] FastAPI Running
+* [ ] Login Working
+* [ ] Signup Working
+* [ ] Chatbot Responding
+* [ ] Locations Stored
+* [ ] Chats Stored
+* [ ] Admin Dashboard Accessible
+* [ ] Emergency Contacts Displayed
+* [ ] Risk Classification Working
+
+---
+
 # 👨‍💻 Project Contributors
 
 ### Bandi Chandra Kanth
