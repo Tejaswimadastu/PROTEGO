@@ -720,6 +720,7 @@ By combining Machine Learning, NLP, Safety Intelligence, and Real-Time Monitorin
 ## © 2026 PROTEGO
 
 **Developed by 
+
 --Bandi Chandra Kanth 
 
 --Tejaswi Madastu**
