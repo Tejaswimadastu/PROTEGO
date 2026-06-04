@@ -1,407 +1,390 @@
-# 🛡️ PROTEGO - AI-Powered Safety Monitoring & Crisis Support System
+# 🛡️ PROTEGO
 
-## 📌 Overview
+### AI-Powered Safety Monitoring, Risk Assessment & Crisis Support System
 
-PROTEGO is an AI-powered safety monitoring system designed to provide emotional support, risk assessment, and emergency guidance using Machine Learning, Natural Language Processing (NLP), and rule-based safety intelligence.
-
-The system analyzes user messages, identifies emotional states, classifies risk levels, detects potential crisis situations, and provides appropriate guidance along with emergency contacts when required.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/FastAPI-Backend-success?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Machine-Learning-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/NLP-Natural%20Language%20Processing-red?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Supabase-Database-green?style=for-the-badge">
+</p>
 
 ---
 
-## 🚀 Key Features
+## 🌍 Project Vision
 
-### 🤖 AI Chat Assistant
+Millions of people experience emotional distress, fear, harassment, abuse, loneliness, and crisis situations every day. Many hesitate to seek help due to fear, stigma, lack of awareness, or limited access to support systems.
 
-* Real-time conversational interface
-* Human-like empathetic responses
-* Emotional support guidance
-* Safety-focused interactions
+**PROTEGO** was developed to bridge this gap through Artificial Intelligence.
 
-### 🧠 Machine Learning Engine
+The system acts as an intelligent safety companion capable of understanding emotional signals from natural language, detecting potential risk situations, classifying severity levels, and providing immediate guidance and emergency resources when necessary.
 
-* Emotion Classification
-* Sentiment Analysis
-* Risk Classification
-* Safety Rule Enforcement
+Unlike traditional chatbots, PROTEGO combines:
+
+* Machine Learning
+* Natural Language Processing
+* Safety Rule Engines
+* Crisis Detection Logic
+* Location Awareness
+* Real-Time Risk Monitoring
+
+to create a comprehensive AI-powered safety ecosystem.
+
+---
+
+# 🎯 Problem Statement
+
+Many existing support platforms:
+
+❌ Do not understand emotional context
+
+❌ Cannot identify crisis situations
+
+❌ Provide generic responses
+
+❌ Lack emergency escalation mechanisms
+
+❌ Do not support proactive safety monitoring
+
+PROTEGO addresses these limitations by integrating intelligent risk assessment and contextual response generation.
+
+---
+
+# 🚀 Key Objectives
+
+### 🧠 Emotion Understanding
+
+Identify emotional states from user messages.
+
+### 📊 Risk Classification
+
+Determine severity level of user situations.
 
 ### 🚨 Crisis Detection
 
-* Emergency keyword detection
-* Self-harm indicator detection
-* Physical abuse detection
-* Escalation monitoring
-
-### 📍 Location Tracking
-
-* User location collection (with permission)
-* Admin visibility of user locations
-* Emergency monitoring support
-
-### 👤 Authentication System
-
-* User Signup
-* User Login
-* Session Management
-* Role-based Access Control
-
-### 📊 Admin Dashboard
-
-* User Monitoring
-* Chat Analytics
-* Risk Distribution Charts
-* Emergency Case Tracking
-* Location Visualization
+Recognize emergency and high-risk scenarios.
 
 ### 📞 Emergency Assistance
 
-* Country-specific emergency contacts
-* Women Helpline
-* Police Assistance
-* Mental Health Support
-* Child Protection Services
+Provide country-specific emergency resources.
+
+### 📍 Location Awareness
+
+Track user locations (with permission) for monitoring and response support.
+
+### 👨‍💼 Administrative Monitoring
+
+Enable administrators to monitor trends, risks, and emergency cases.
+
+### 💬 Human-Centered Conversations
+
+Generate empathetic and supportive responses.
 
 ---
 
-# 🏗️ System Architecture
+# 🏗️ System Overview
 
-User
+PROTEGO operates through multiple intelligent layers:
+
+User Input
 ↓
-Frontend (HTML + CSS + JavaScript)
+NLP Preprocessing
 ↓
-FastAPI Backend
+Feature Extraction
 ↓
-ML Models + Safety Rules
+Emotion Detection Model
 ↓
-Response Engine
+Sentiment Analysis Model
 ↓
-Supabase Database
+Risk Classification Model
 ↓
-Admin Dashboard
+Safety Rule Engine
+↓
+Response Generation Engine
+↓
+Emergency Assistance Layer
+↓
+User Interface
+
+This layered architecture ensures both accuracy and safety.
 
 ---
 
-# 🧠 Machine Learning Components
+# 🧠 Artificial Intelligence Components
 
-## Emotion Classification
+## 1. Emotion Detection Engine
 
-Detects:
+Classifies emotions such as:
 
-* Sadness
 * Fear
+* Sadness
 * Anger
-* Shame
 * Neutral
+* Distress
 
-Model:
+Purpose:
 
-* Linear Support Vector Machine (LinearSVC)
-* TF-IDF Vectorization
+Understanding emotional state helps the system personalize support and determine appropriate response strategies.
 
 ---
 
-## Sentiment Analysis
+## 2. Sentiment Analysis Engine
 
-Detects:
+Classifies user sentiment into:
 
 * Positive
 * Neutral
 * Negative
 
-Model:
+Purpose:
 
-* Logistic Regression
+Provides additional emotional context for risk evaluation.
+
+---
+
+## 3. Risk Assessment Engine
+
+Classifies situations into:
+
+🟢 Low Risk
+
+🟡 Medium Risk
+
+🟠 High Risk
+
+🔴 Emergency
+
+Purpose:
+
+Ensures appropriate intervention recommendations.
+
+---
+
+## 4. Safety Rule Engine
+
+Machine Learning predictions are enhanced using deterministic safety rules.
+
+Examples:
+
+* Abuse indicators
+* Violence-related keywords
+* Threat detection
+* Immediate danger situations
+* Crisis escalation patterns
+
+This prevents dangerous situations from being underestimated.
+
+---
+
+# 📊 Admin Intelligence Dashboard
+
+The administrator dashboard provides:
+
+### User Analytics
+
+* Registered users
+* Active users
+* Risk distribution
+
+### Crisis Monitoring
+
+* High-risk users
+* Emergency cases
+* Escalation tracking
+
+### Geolocation Monitoring
+
+* User locations
+* Risk hotspots
+* Incident concentration zones
+
+### Chat Analytics
+
+* Conversation statistics
+* Sentiment distribution
+* Emotional trends
+
+---
+
+# 💡 Advanced Features
+
+✅ Machine Learning Powered
+
+✅ NLP-Based Understanding
+
+✅ Real-Time Chatbot
+
+✅ Emotion Detection
+
+✅ Sentiment Analysis
+
+✅ Risk Classification
+
+✅ Emergency Escalation
+
+✅ Emergency Contact Assistance
+
+✅ Location Tracking
+
+✅ Admin Dashboard
+
+✅ User Authentication
+
+✅ Chat History Storage
+
+✅ Supabase Integration
+
+✅ FastAPI Backend
+
+✅ Responsive Frontend
+
+---
+
+# 🛠️ Technology Stack
+
+## Backend
+
+* Python
+* FastAPI
+* Uvicorn
+
+## Machine Learning
+
+* Scikit-Learn
 * TF-IDF Vectorization
-
----
-
-## Risk Classification
-
-Detects:
-
-* Low Risk
-* Medium Risk
-* High Risk
-* Emergency Risk
-
-Model:
-
 * LinearSVC
-* Safety-Oriented Risk Weights
+* Logistic Regression
+
+## Natural Language Processing
+
+* NLTK
+* Lemmatization
+* Stopword Removal
+* Text Normalization
+
+## Database
+
+* Supabase PostgreSQL
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap
+
+## Data Storage
+
+* JSON Knowledge Base
+* Trained ML Models (.pkl)
 
 ---
 
-# 🛡️ Safety Rule Engine
+# 📂 Core Modules
 
-Deterministic safety overrides ensure that dangerous situations are never ignored.
+### API Layer
 
-Rules include:
+Handles communication between frontend and ML services.
 
-* Emergency keyword detection
-* Physical abuse detection
-* Repeated high-risk escalation
-* Emergency persistence tracking
-* Risk trend analysis
+### NLP Layer
 
----
+Responsible for preprocessing and feature engineering.
 
-# 📂 Project Structure
+### Machine Learning Layer
 
-PROTEGO/
+Performs emotion, sentiment, and risk prediction.
 
-├── protego/
+### Safety Intelligence Layer
 
-│ ├── api/
+Applies rule-based safety validation.
 
-│ │ ├── main.py
+### Response Engine
 
-│ │ ├── chatbot_service.py
+Generates empathetic and contextual responses.
 
-│ │ └── schemas.py
+### Emergency Support Layer
 
-│
+Provides emergency resources and crisis guidance.
 
-│ ├── nlp/
+### Monitoring Layer
 
-│ │ ├── preprocess.py
-
-│ │ ├── features.py
-
-│ │ └── keywords.py
-
-│
-
-│ ├── logic/
-
-│ │ ├── response_engine.py
-
-│ │ ├── safety_rules.py
-
-│ │ ├── risk_scoring.py
-
-│ │ └── context_memory.py
-
-│
-
-│ ├── frontend/
-
-│ │ ├── index.html
-
-│ │ ├── login.html
-
-│ │ ├── signup.html
-
-│ │ └── admin.html
-
-│
-
-│ ├── train/
-
-│ │ ├── train_emotion.py
-
-│ │ ├── train_sentiment.py
-
-│ │ └── train_risk.py
-
-│
-
-│ ├── models/
-
-│ │ ├── emotion_model.pkl
-
-│ │ ├── sentiment_model.pkl
-
-│ │ └── risk_model.pkl
-
-│
-
-│ └── knowledge/
-
-│ ├── guidance_templates.json
-
-│ ├── emergency_contacts.json
-
-│ └── keyword_responses.json
+Tracks users, locations, and system activity.
 
 ---
 
-# 💾 Database Design
+# 🔬 Innovation Highlights
 
-## Users Table
+PROTEGO is not simply a chatbot.
 
-| Column   | Type |
-| -------- | ---- |
-| id       | UUID |
-| name     | Text |
-| email    | Text |
-| password | Text |
-| role     | Text |
+It represents a hybrid AI safety platform that combines:
 
----
+* Predictive Intelligence
+* Human-Centered Design
+* Crisis Prevention
+* Emergency Awareness
+* Administrative Monitoring
 
-## Chats Table
+into a unified system.
 
-| Column   | Type |
-| -------- | ---- |
-| id       | UUID |
-| user_id  | UUID |
-| message  | Text |
-| response | Text |
-| risk     | Text |
+The project demonstrates how Machine Learning and NLP can be applied to create socially impactful technology capable of assisting individuals during emotionally vulnerable situations.
 
 ---
 
-## Locations Table
+# 🎓 Academic Relevance
 
-| Column     | Type      |
-| ---------- | --------- |
-| id         | UUID      |
-| user_id    | UUID      |
-| latitude   | Float     |
-| longitude  | Float     |
-| created_at | Timestamp |
-
----
-
-# ⚙️ Installation
-
-## Clone Repository
-
-```bash
-git clone https://github.com/yourusername/protego.git
-cd protego
-```
-
-## Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-## Download NLTK Resources
-
-```bash
-python -m nltk.downloader stopwords wordnet
-```
-
----
-
-# 🎯 Train Models
-
-## Emotion Model
-
-```bash
-python -m protego.train.train_emotion
-```
-
-## Sentiment Model
-
-```bash
-python -m protego.train.train_sentiment
-```
-
-## Risk Model
-
-```bash
-python -m protego.train.train_risk
-```
-
----
-
-# ▶️ Run Application
-
-```bash
-python -m uvicorn protego.api.main:app --reload
-```
-
-Application:
-
-```text
-http://localhost:8000
-```
-
-API Docs:
-
-```text
-http://localhost:8000/docs
-```
-
----
-
-# 📡 API Endpoints
-
-## Chat
-
-POST
-
-```text
-/chat
-```
-
-Example:
-
-```json
-{
-  "message": "I feel scared to go home tonight",
-  "country": "India"
-}
-```
-
-Response:
-
-```json
-{
-  "reply": "I’m concerned about your safety.",
-  "risk_level": "high",
-  "emotion": "fear",
-  "sentiment": "negative"
-}
-```
-
----
-
-# 🔒 Security Features
-
-* Input Validation
-* Rule-Based Safety Overrides
-* Crisis Detection
-* Risk Escalation Monitoring
-* Emergency Contact Routing
-
----
-
-# 🎓 Academic Concepts Used
+This project integrates concepts from:
 
 * Machine Learning
 * Natural Language Processing
-* Text Classification
-* Feature Engineering
-* Sentiment Analysis
-* Risk Assessment
-* FastAPI Development
-* Database Management
-* Frontend Integration
+* Artificial Intelligence
+* Data Science
+* Software Engineering
+* Web Development
+* Database Systems
+* Human-Computer Interaction
+
+making it suitable as a major academic project, research prototype, or portfolio project.
 
 ---
 
-# 🌟 Future Enhancements
+# 👨‍💻 Project Contributors
+
+### Bandi Chandra Kanth
+
+Machine Learning, NLP, Backend Development, System Design
+
+### Tejaswi Madastu
+
+Frontend Development, UI/UX Design, Testing & Integration
+
+---
+
+# 🌟 Future Scope
 
 * Deep Learning Models
 * Transformer-Based NLP
-* Real-Time Notifications
-* SMS Alerts
-* Email Alerts
+* Voice-Based Interaction
 * Mobile Application
+* SMS Emergency Alerts
+* Email Notifications
+* Real-Time Incident Reporting
 * Multi-Language Support
-* Live Emergency Dispatch System
+* Predictive Crisis Forecasting
+* AI Safety Analytics Platform
 
 ---
 
-# 👨‍💻 Developed By
-Madastu Tejaswi(23B81A05EA)
+# 🏆 Conclusion
 
+PROTEGO demonstrates the potential of Artificial Intelligence in building safer digital environments through intelligent emotional understanding, risk assessment, and crisis support.
 
-Bandi Chandra Kanth(23B81A05CE)
+By combining Machine Learning, NLP, Safety Intelligence, and Real-Time Monitoring, the system aims to provide meaningful assistance when users need support the most.
 
-PROTEGO – AI-Powered Safety Monitoring System
+---
 
-2026
+## © 2026 PROTEGO
+
+**Developed by Bandi Chandra Kanth 
+
+Tejaswi Madastu**
