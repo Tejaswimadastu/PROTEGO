@@ -398,6 +398,8 @@ Response:
 
 # 👨‍💻 Developed By
 Madastu Tejaswi(23B81A05EA)
+
+
 Bandi Chandra Kanth(23B81A05CE)
 
 PROTEGO – AI-Powered Safety Monitoring System
